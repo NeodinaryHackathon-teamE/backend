@@ -33,7 +33,7 @@ public class Likes extends BaseEntity {
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isLiked;
 
-    public void cancleLike() {
+    public void cancelLike() {
         this.isLiked = false;
     }
 

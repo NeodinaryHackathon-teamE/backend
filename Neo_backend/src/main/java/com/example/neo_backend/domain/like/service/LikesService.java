@@ -65,7 +65,7 @@ public class LikesService {
         } else {
             // 이미 좋아요를 눌렀다면 좋아요 취소
             log.info("이미 좋아요를 눌렀습니다. 좋아요를 취소합니다.");
-            likeRecord.cancleLike();
+            likeRecord.cancelLike();
         }
 
         return likesRepository.countByPostPostIdAndIsLikedTrue(postId);
