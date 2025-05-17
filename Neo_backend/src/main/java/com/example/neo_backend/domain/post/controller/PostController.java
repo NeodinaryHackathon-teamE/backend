@@ -27,4 +27,10 @@ public class PostController {
         }
     }
 
+    @GetMapping("/status")
+    public ResponseEntity<ApiResponse> getPostsByStatus(@RequestParam boolean status) {
+        return postService.getPostsByStatus(status);
+    }
+
+
 }

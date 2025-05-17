@@ -3,7 +3,6 @@ package com.example.neo_backend.domain.post.service;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.repository.PostRepository;
 import com.example.neo_backend.global.common.enums.Category;
-import com.example.neo_backend.global.common.exception.GeneralException;
 import com.example.neo_backend.global.common.response.ApiResponse;
 import com.example.neo_backend.global.common.status.SuccessStatus;
 import com.example.neo_backend.global.common.status.ErrorStatus;
@@ -32,4 +31,18 @@ public class PostService {
 
         return ApiResponse.onSuccess(SuccessStatus._OK, responseList);
     }
+
+    public ResponseEntity<ApiResponse> getPostsByStatus(boolean status) {
+        var postList = postRepository.findByStatus((status));
+        if (postList.isEmpty()) {
+            return ApiResponse.onFailure(ErrorStatus._NOT_FOUND);
+        }
+
+        List<PostResponseDto> responseList = postList.stream()
+                .map(PostResponseDto::from)
+                .collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(SuccessStatus._OK, responseList);
+    }
+
 }
