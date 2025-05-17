@@ -40,7 +40,7 @@ jobs:
 
       # spring-boot-app만 다시 실행
       - name: Run Docker compose
-        run: docker compose rm --force spring-boot-app && docker compose up -d spring-boot-app
+        run: docker-compose rm --force spring-boot-app && docker-compose up -d spring-boot-app
 
 
 
