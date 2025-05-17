@@ -39,8 +39,14 @@ jobs:
         run: docker stop teame-be || true && docker rm teame-be || true
 
       # spring-boot-app만 다시 실행
-      - name: Run Docker compose
-        run: docker-compose rm --force spring-boot-app && docker-compose up -d spring-boot-app
+      - name: Deploy with Docker Compose
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+        run: |
+          echo "SPRING_DATASOURCE_USERNAME=$DB_USERNAME" >> .env
+          echo "SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD" >> .env
+          docker-compose rm --force spring-boot-app && docker-compose up -d spring-boot-app
 
 
 
