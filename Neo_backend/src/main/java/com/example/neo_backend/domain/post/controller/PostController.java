@@ -4,14 +4,19 @@ import com.example.neo_backend.domain.post.dto.PostRequestDto;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.service.PostService;
 import com.example.neo_backend.domain.user.entity.User;
+import com.example.neo_backend.domain.user.repository.UserRepository;
+import com.example.neo_backend.global.common.exception.GeneralException;
+import com.example.neo_backend.global.common.status.ErrorStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.Enumeration;
 
 @Controller
 @RequiredArgsConstructor
@@ -20,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 public class PostController {
 
     private final PostService postService;
+    private final UserRepository userRepository;
 
     @PostMapping
     @Operation(summary = "제보글 작성", description = "제보글 작성 API")
@@ -30,23 +36,39 @@ public class PostController {
 
     @GetMapping("/{postId}")
     @Operation(summary = "제보글 상세 조회", description = "게시글 상세 정보 및 좋아요 수 조회")
-    public ResponseEntity<PostResponseDto> getPostDetail(@PathVariable Long postId) {
+    public ResponseEntity<PostResponseDto> getPostDetail(@PathVariable("postId") Long postId) {
         PostResponseDto response = postService.getPostDetail(postId);
         return ResponseEntity.ok(response);
     }
 
     @PutMapping("/{postId}/complete")
-    @Operation(summary = "제보글 완료 처리", description = "게시글의 status를 true(완료)로 변경")
-    public ResponseEntity<PostResponseDto> completePost(@PathVariable Long postId,
-                                                        @AuthenticationPrincipal UserDetails userDetails) {
-        User user = (User) userDetails;
-        Long currentUserId = user.getUserId();
+    @Operation(summary = "제보글 완료 처리", description = "게시글의 status를 완료로 변경")
+    public ResponseEntity<PostResponseDto> completePost(@PathVariable("postId") Long postId,
+                                                        HttpSession session) {
 
+        String email = null;
+
+        Enumeration<String> attrNames = session.getAttributeNames();
+        while (attrNames.hasMoreElements()) {
+            String attrName = attrNames.nextElement();
+            Object attr = session.getAttribute(attrName);
+            if (attr instanceof User) {
+                User user = (User) attr;
+                email = user.getEmail();
+                break;
+            }
+        }
+
+        if (email == null) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+        }
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new GeneralException(ErrorStatus.NOT_FOUND_USER));
+
+        Long currentUserId = user.getUserId();
         PostResponseDto response = postService.completePost(postId, currentUserId);
         return ResponseEntity.ok(response);
     }
-
-
-
 
 }
