@@ -1,6 +1,5 @@
 package com.example.neo_backend.domain.post.service;
 
-
 import com.example.neo_backend.domain.like.repository.LikesRepository;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.pin.repository.PinRepository;
@@ -8,17 +7,25 @@ import com.example.neo_backend.domain.post.dto.PostRequestDto;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.domain.post.repository.PostRepository;
+import com.example.neo_backend.global.common.enums.Category;
+import com.example.neo_backend.global.common.response.ApiResponse;
+import com.example.neo_backend.global.common.status.SuccessStatus;
 import com.example.neo_backend.domain.user.entity.User;
 import com.example.neo_backend.domain.user.repository.UserRepository;
 import com.example.neo_backend.global.common.exception.GeneralException;
 import com.example.neo_backend.global.common.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class PostService {
+
     private final PostRepository postRepository;
     private final UserRepository userRepository;
     private final PinRepository pinRepository;
@@ -27,7 +34,6 @@ public class PostService {
     @Transactional
     public PostResponseDto createPost(PostRequestDto dto) {
         try {
-
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 유저를 찾을 수 없습니다."));
 
@@ -35,7 +41,6 @@ public class PostService {
                     .latitude(dto.getLatitude())
                     .longitude(dto.getLongitude())
                     .build();
-
 
             Post post = Post.builder()
                     .user(user)
@@ -56,7 +61,7 @@ public class PostService {
                     .place(savedPost.getPlace())
                     .status(savedPost.getStatus())
                     .category(savedPost.getCategory().toString())
-                    .likeCount(0L) //처음엔 좋아요 0개
+                    .likeCount(0L)
                     .build();
 
         } catch (GeneralException e) {
@@ -67,13 +72,32 @@ public class PostService {
         }
     }
 
+    public ResponseEntity<ApiResponse> getPostsByCategory(Category category) {
+        try {
+            var postList = postRepository.findByCategory(category);
+            if (postList.isEmpty()) {
+                return ApiResponse.onFailure(ErrorStatus._NOT_FOUND);
+            }
+
+            List<PostResponseDto> responseList = postList.stream()
+                    .map(PostResponseDto::from)
+                    .collect(Collectors.toList());
+
+            return ApiResponse.onSuccess(SuccessStatus._OK, responseList);
+        } catch (GeneralException e) {
+            throw e;
+        } catch (Exception e) {
+            e.printStackTrace();
+            throw new GeneralException(ErrorStatus._POST_INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @Transactional
     public PostResponseDto getPostDetail(Long postId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "게시글을 찾을 수 없습니다."));
 
-        Long likeCount = likesRepository.countByPostPostIdAndIsLikedTrue(postId); // 👍 좋아요 개수 조회
+        Long likeCount = likesRepository.countByPostPostIdAndIsLikedTrue(postId);
 
         return PostResponseDto.builder()
                 .postId(post.getPostId())
@@ -86,18 +110,29 @@ public class PostService {
                 .build();
     }
 
+    public ResponseEntity<ApiResponse> getPostsByStatus(boolean status) {
+        var postList = postRepository.findByStatus(status);
+        if (postList.isEmpty()) {
+            return ApiResponse.onFailure(ErrorStatus._NOT_FOUND);
+        }
+
+        List<PostResponseDto> responseList = postList.stream()
+                .map(PostResponseDto::from)
+                .collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(SuccessStatus._OK, responseList);
+    }
 
     @Transactional
     public PostResponseDto completePost(Long postId, Long currentUserId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 게시글을 찾을 수 없습니다."));
 
-        // 작성자 검증
         if (!post.getUser().getUserId().equals(currentUserId)) {
             throw new GeneralException(ErrorStatus.NOT_AUTHOR_OF_POST);
         }
 
-        post.complete(); //status = true로 변경
+        post.complete(); // status = true
 
         Long likeCount = likesRepository.countByPostPostIdAndIsLikedTrue(postId);
 
@@ -111,6 +146,4 @@ public class PostService {
                 likeCount
         );
     }
-
-
 }
