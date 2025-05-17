@@ -4,6 +4,7 @@ import com.example.neo_backend.domain.image.entity.Image;
 import com.example.neo_backend.domain.like.entity.Likes;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.user.entity.User;
+import com.example.neo_backend.global.common.entity.BaseEntity;
 import com.example.neo_backend.global.common.enums.Category;
 import jakarta.persistence.*;
 import lombok.*;
@@ -16,18 +17,18 @@ import java.util.List;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Post {
+public class Post extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long postId;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "pin_id", nullable = false)
+    @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+    @JoinColumn(name = "pin_id")
     private Pin pin;
 
     @Column(length = 20, nullable = false)
@@ -50,7 +51,12 @@ public class Post {
     @Builder.Default
     private List<Image> imageList = new ArrayList<>();
 
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
-    @Builder.Default
     private List<Likes> likeList = new ArrayList<>();
+
+    public void complete() {
+        this.status = true;
+    }
+
 }
