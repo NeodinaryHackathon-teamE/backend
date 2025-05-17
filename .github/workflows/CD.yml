@@ -43,9 +43,13 @@ jobs:
         env:
           DB_USERNAME: ${{ secrets.DB_USERNAME }}
           DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          S3ACCESSKEY: ${{ secrets.S3ACCESSKEY }}
+          S3SECRETKEY: ${{ secrets.S3SECRETKEY }}
         run: |
           echo "SPRING_DATASOURCE_USERNAME=$DB_USERNAME" >> .env
           echo "SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD" >> .env
+          echo "S3ACCESSKEY=$S3ACCESSKEY" >> .env
+          echo "S3SECRETKEY=$S3SECRETKEY" >> .env
           docker-compose rm --force spring-boot-app && docker-compose up -d spring-boot-app
 
 
