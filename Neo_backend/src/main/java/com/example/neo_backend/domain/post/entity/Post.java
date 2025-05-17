@@ -1,7 +1,7 @@
 package com.example.neo_backend.domain.post.entity;
 
 import com.example.neo_backend.domain.image.entity.Image;
-import com.example.neo_backend.domain.like.entity.Like;
+import com.example.neo_backend.domain.like.entity.Likes;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.user.entity.User;
 import com.example.neo_backend.global.common.enums.Category;
@@ -46,9 +46,11 @@ public class Post {
     @Column(nullable = false)
     private Category category;
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
     private List<Image> imageList = new ArrayList<>();
 
-    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
-    private List<Like> likeList = new ArrayList<>();
+    @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Builder.Default
+    private List<Likes> likeList = new ArrayList<>();
 }

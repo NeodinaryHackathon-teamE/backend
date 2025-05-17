@@ -10,11 +10,17 @@ import java.util.function.Predicate;
 @Getter
 @AllArgsConstructor
 public enum ErrorStatus {
+    // 공통 에러
     _INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "COMMON5000", "서버 에러, 관리자에게 문의 바랍니다."),
     _BAD_REQUEST(HttpStatus.BAD_REQUEST, "COMMON4000", "잘못된 요청입니다."),
     _UNAUTHORIZED(HttpStatus.UNAUTHORIZED, "COMMON4001", "인증이 필요합니다."),
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON4003", "금지된 요청입니다."),
     _NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4004", "페이지를 찾을 수 없습니다."),
+
+    // 인증 관련 에러
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "AUTH4001", "중복된 이메일입니다."),
+    NOT_FOUND_USER(HttpStatus.BAD_REQUEST, "AUTH4002", "해당하는 유저가 없습니다."),
+    INVALID_PASSWORD(HttpStatus.BAD_REQUEST, "AUTH4003", "비밀번호가 일치하지 않습니다."),
 
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "VALID4001", "입력값이 올바르지 않습니다."),
     INVALID_KEYWORD(HttpStatus.BAD_REQUEST, "SEARCH4001", "검색어는 공백일 수 없습니다."),
