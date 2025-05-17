@@ -14,7 +14,7 @@ import org.springframework.web.method.annotation.MethodArgumentTypeMismatchExcep
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
-@RestControllerAdvice
+// @RestControllerAdvice
 public class ExceptionAdvice {
     @ExceptionHandler
     public ResponseEntity<ApiResponse> validation(ConstraintViolationException e) {

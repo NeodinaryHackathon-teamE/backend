@@ -1,13 +1,7 @@
 package com.example.neo_backend.domain.user.entity;
 
-import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.global.common.entity.BaseEntity;
-import com.example.neo_backend.domain.image.entity.Image;
-import com.example.neo_backend.domain.like.entity.Like;
 import jakarta.persistence.*;
-
-import java.util.ArrayList;
-import java.util.List;
 
 import lombok.*;
 
@@ -30,5 +24,8 @@ public class User extends BaseEntity {
 
     @Column(nullable = false, length = 100)
     private String password;
+
+    @Column(nullable = false, length = 20)
+    private String role;
 
 }
