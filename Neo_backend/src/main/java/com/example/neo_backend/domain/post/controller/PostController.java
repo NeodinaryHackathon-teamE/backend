@@ -9,15 +9,20 @@ import com.example.neo_backend.domain.post.service.PostService;
 import com.example.neo_backend.domain.user.entity.User;
 import com.example.neo_backend.domain.user.repository.UserRepository;
 import com.example.neo_backend.global.common.status.ErrorStatus;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.Enumeration;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/post")
@@ -30,10 +35,25 @@ public class PostController {
 
     @PostMapping
     @Operation(summary = "제보글 작성", description = "제보글 작성 API")
-    public ResponseEntity<PostResponseDto> createPost(@RequestBody PostRequestDto dto) {
-        PostResponseDto response = postService.createPost(dto);
+    public ResponseEntity<PostResponseDto> createPost(
+            @RequestPart("dto") String dtoJson,
+            @RequestPart("images") List<MultipartFile> images) {
+
+        System.out.println(images.size());
+
+        PostRequestDto dto;
+
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            dto = objectMapper.readValue(dtoJson, PostRequestDto.class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException("JSON 파싱 실패", e);
+        }
+
+        PostResponseDto response = postService.createPost(dto, images);
         return ResponseEntity.ok(response);
     }
+
 
     @GetMapping("/{postId}")
     @Operation(summary = "제보글 상세 조회", description = "게시글 상세 정보 및 좋아요 수 조회")
