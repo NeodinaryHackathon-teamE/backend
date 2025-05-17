@@ -20,7 +20,7 @@ public class AuthService {
 
     public ResponseEntity<ApiResponse> signup(AuthDto authDTO) {
         // 이메일 중복 확인
-        if (userRepository.findByEmail(authDTO.getEmail()) != null) {
+        if (userRepository.findByEmail(authDTO.getEmail()).isPresent()) {
             return ApiResponse.onFailure(ErrorStatus.DUPLICATED_EMAIL);
         }
 
