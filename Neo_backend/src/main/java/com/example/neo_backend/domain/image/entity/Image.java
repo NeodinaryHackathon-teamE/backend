@@ -3,10 +3,16 @@ package com.example.neo_backend.domain.image.entity;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.domain.user.entity.User;
+import com.example.neo_backend.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.*;
 
 @Entity
-public class Image {
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Image extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long imageId;

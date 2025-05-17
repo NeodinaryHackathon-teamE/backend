@@ -3,6 +3,7 @@ package com.example.neo_backend.domain.like.entity;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.domain.user.entity.User;
+import com.example.neo_backend.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -11,7 +12,7 @@ import lombok.*;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Like {
+public class Likes extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +32,12 @@ public class Like {
 
     @Column(nullable = false, columnDefinition = "BOOLEAN DEFAULT false")
     private Boolean isLiked;
+
+    public void cancelLike() {
+        this.isLiked = false;
+    }
+
+    public void doLike() {
+        this.isLiked = true;
+    }
 }
