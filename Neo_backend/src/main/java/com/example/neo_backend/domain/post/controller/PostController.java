@@ -3,10 +3,13 @@ package com.example.neo_backend.domain.post.controller;
 import com.example.neo_backend.domain.post.dto.PostRequestDto;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.service.PostService;
+import com.example.neo_backend.domain.user.entity.User;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,8 +37,12 @@ public class PostController {
 
     @PutMapping("/{postId}/complete")
     @Operation(summary = "제보글 완료 처리", description = "게시글의 status를 true(완료)로 변경")
-    public ResponseEntity<PostResponseDto> completePost(@PathVariable Long postId) {
-        PostResponseDto response = postService.completePost(postId);
+    public ResponseEntity<PostResponseDto> completePost(@PathVariable Long postId,
+                                                        @AuthenticationPrincipal UserDetails userDetails) {
+        User user = (User) userDetails;
+        Long currentUserId = user.getUserId();
+
+        PostResponseDto response = postService.completePost(postId, currentUserId);
         return ResponseEntity.ok(response);
     }
 

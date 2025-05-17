@@ -12,7 +12,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 public class PostRequestDto {
-//    private Long userId;
+    private Long userId;
     private String title;
     private String content;
     private String place;

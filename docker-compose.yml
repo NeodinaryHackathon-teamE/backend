@@ -1,0 +1,14 @@
+services:
+  spring-boot-app:
+    container_name: teame-be
+    restart: on-failure
+    image: hadoroke/teame-be:latest
+    ports:
+        - "8080:8080"
+    environment:
+        SPRING_DATASOURCE_URL: jdbc:mysql://teame-db.c5msg0qqmmcw.ap-northeast-2.rds.amazonaws.com:3306/teamE?serverTimezone=Asia/Seoul&useSSL=false&allowPublicKeyRetrieval=true
+        SPRING_DATASOURCE_USERNAME: ${SPRING_DATASOURCE_USERNAME}
+        SPRING_DATASOURCE_PASSWORD: ${SPRING_DATASOURCE_PASSWORD}
+        S3ACCESSKEY: ${S3ACCESSKEY}
+        S3SECRETKEY: ${S3SECRETKEY}
+        TZ: Asia/Seoul

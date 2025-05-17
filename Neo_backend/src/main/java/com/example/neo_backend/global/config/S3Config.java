@@ -1,4 +1,4 @@
-package com.example.neo_backend.config;
+package com.example.neo_backend.global.config;
 
 import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;

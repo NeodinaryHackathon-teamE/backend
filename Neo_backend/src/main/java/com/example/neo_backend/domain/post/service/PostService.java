@@ -8,10 +8,11 @@ import com.example.neo_backend.domain.post.dto.PostRequestDto;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.domain.post.repository.PostRepository;
+import com.example.neo_backend.domain.user.entity.User;
+import com.example.neo_backend.domain.user.repository.UserRepository;
 import com.example.neo_backend.global.common.exception.GeneralException;
 import com.example.neo_backend.global.common.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class PostService {
     private final PostRepository postRepository;
-//    private final UserRepository userRepository;
+    private final UserRepository userRepository;
     private final PinRepository pinRepository;
     private final LikesRepository likesRepository;
 
@@ -27,8 +28,8 @@ public class PostService {
     public PostResponseDto createPost(PostRequestDto dto) {
         try {
 
-//            User user = userRepository.findById(dto.getUserId())
-//                    .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 유저를 찾을 수 없습니다."));
+            User user = userRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 유저를 찾을 수 없습니다."));
 
             Pin pin = Pin.builder()
                     .latitude(dto.getLatitude())
@@ -37,7 +38,7 @@ public class PostService {
 
 
             Post post = Post.builder()
-//                    .user(user)
+                    .user(user)
                     .pin(pin)
                     .title(dto.getTitle())
                     .content(dto.getContent())
@@ -87,9 +88,14 @@ public class PostService {
 
 
     @Transactional
-    public PostResponseDto completePost(Long postId) {
+    public PostResponseDto completePost(Long postId, Long currentUserId) {
         Post post = postRepository.findById(postId)
                 .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 게시글을 찾을 수 없습니다."));
+
+        // 작성자 검증
+        if (!post.getUser().getUserId().equals(currentUserId)) {
+            throw new GeneralException(ErrorStatus.NOT_AUTHOR_OF_POST);
+        }
 
         post.complete(); //status = true로 변경
 

@@ -63,4 +63,4 @@ out/
 ### VS Code ###
 .vscode/
 .idea/
-.env
+Neo_backend/.env
