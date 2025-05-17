@@ -63,4 +63,30 @@ public class AuthService {
         log.info("Session User: {}", user1.getEmail());
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
+
+    public ResponseEntity<ApiResponse> getMyPage(HttpServletRequest request) {
+        HttpSession session = request.getSession(false);
+        if (session == null) {
+            throw new GeneralException(ErrorStatus._UNAUTHORIZED);
+        }
+
+        // 세션에서 저장한 사용자 정보 꺼내오기
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            throw new GeneralException(ErrorStatus._UNAUTHORIZED);
+        }
+
+        int myPosts = postRepository.countByUser(user);
+        int myLikes = likeRepository.countByUser(user);
+
+        MyPageResponse response = MyPageResponse.builder()
+                .nickname(user.getNickName())
+                .email(user.getEmail())
+                .postCount(myPosts)
+                .likeCount(myLikes)
+                .build();
+
+        return ApiResponse.onSuccess(SuccessStatus._OK, response);
+    }
+
 }

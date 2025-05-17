@@ -31,4 +31,10 @@ public class AuthApiController {
         authService.signin(signinDTO, request);
         return ResponseEntity.ok("로그인이 완료되었습니다.");
     }
+
+    @GetMapping("/mypage")
+    @Operation(summary = "내 정보 보기", description = "닉네임, 이메일, 내가 누른 좋아요 개수 및 나의 제보 개수 조회")
+    public ResponseEntity<?> mypage(HttpServletRequest request) {
+        return authService.getMyPage(request);
+    }
 }
