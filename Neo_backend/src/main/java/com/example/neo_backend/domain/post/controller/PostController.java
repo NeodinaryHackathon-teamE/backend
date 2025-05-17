@@ -39,6 +39,10 @@ public class PostController {
             @RequestPart("dto") String dtoJson,
             @RequestPart("images") List<MultipartFile> images) {
 
+        if (images == null || images.size() != 2) {
+            throw new IllegalArgumentException("이미지는 반드시 2개 업로드해야 합니다.");
+        }
+
         System.out.println(images.size());
 
         PostRequestDto dto;
