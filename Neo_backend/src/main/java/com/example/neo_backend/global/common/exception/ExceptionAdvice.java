@@ -9,12 +9,22 @@ import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @Slf4j
-// @RestControllerAdvice
+@RestControllerAdvice(
+        annotations = {RestController.class},
+        basePackages = {
+                "com.example.neo_backend.domain.user.controller",
+                "com.example.neo_backend.domain.post.controller",
+                "com.example.neo_backend.domain.pin.controller",
+                "com.example.neo_backend.domain.like.controller",
+                "com.example.neo_backend.domain.image.controller"
+        }
+)
 public class ExceptionAdvice {
     @ExceptionHandler
     public ResponseEntity<ApiResponse> validation(ConstraintViolationException e) {

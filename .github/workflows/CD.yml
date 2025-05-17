@@ -13,6 +13,7 @@ jobs:
 
     # 리눅스 서버의 Runner에서 실행
     runs-on: self-hosted
+
     steps:
 
       # 현재 레포지토리 가져오기
@@ -38,7 +39,18 @@ jobs:
         run: docker stop teame-be || true && docker rm teame-be || true
 
       # spring-boot-app만 다시 실행
-      - name: Run Docker compose
-        run: docker compose rm -f spring-boot-app && docker compose up -d spring-boot-app
+      - name: Deploy with Docker Compose
+        env:
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          S3ACCESSKEY: ${{ secrets.S3ACCESSKEY }}
+          S3SECRETKEY: ${{ secrets.S3SECRETKEY }}
+        run: |
+          echo "SPRING_DATASOURCE_USERNAME=$DB_USERNAME" >> .env
+          echo "SPRING_DATASOURCE_PASSWORD=$DB_PASSWORD" >> .env
+          echo "S3ACCESSKEY=$S3ACCESSKEY" >> .env
+          echo "S3SECRETKEY=$S3SECRETKEY" >> .env
+          docker-compose rm --force spring-boot-app && docker-compose up -d spring-boot-app
+
 
 
