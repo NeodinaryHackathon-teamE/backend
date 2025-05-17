@@ -6,12 +6,10 @@
 </div>
 
 ## 🔥 팀 소개
-| ![Group 4](https://github.com/user-attachments/assets/12b25929-ac42-4e65-8db7-fad63c69f37c)
- | ![Group 3](https://github.com/user-attachments/assets/7ecf01e1-0483-413f-be3b-014a189a59bf)
-| ![Group 2](https://github.com/user-attachments/assets/82a6f9bc-cda2-4677-8dd2-541f835445c3)
-|
+| ![Group 4](https://github.com/user-attachments/assets/12b25929-ac42-4e65-8db7-fad63c69f37c) | ![Group 3](https://github.com/user-attachments/assets/7ecf01e1-0483-413f-be3b-014a189a59bf) | ![Group 2](https://github.com/user-attachments/assets/82a6f9bc-cda2-4677-8dd2-541f835445c3) |
 | :--: | :--: | :--: |
 | **주채연** | **진준우** | **이윤지** |
+
 
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🛠️ Tech Stacks </h2> <br> 
