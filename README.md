@@ -1,7 +1,9 @@
+![Banner169](https://github.com/user-attachments/assets/044fc450-2a7d-4843-9a1c-c793b659269c)
+
 <div style="text-align: left;"> 
-    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> ✨ 프로젝트 소개 </h2>  
+    <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> ✨ 프로젝트 소개: Spot It </h2>  
     <div style="font-weight: 700; font-size: 15px; text-align: left; color: #282d33;"> 
-        도시 숨구멍 어쩌고 저쩌고.. . 
+         - 시민 공감을 모아 도시 문제 해결을 앞당기는 참여형 제보 플랫폼; 도시의 문제를 내가 직접 찍어 바꾸다
     </div> 
 </div>
 

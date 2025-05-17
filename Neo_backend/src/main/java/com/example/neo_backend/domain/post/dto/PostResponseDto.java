@@ -1,6 +1,7 @@
 package com.example.neo_backend.domain.post.dto;
 
 import lombok.AllArgsConstructor;
+import com.example.neo_backend.domain.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
 
@@ -10,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Builder
 public class PostResponseDto {
+
     private Long postId;
     private String title;
     private String content;
