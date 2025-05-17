@@ -11,5 +11,4 @@ public class ErrorReason {
     private final Integer status;
     private final String code;
     private final String reason;
-    private final String info;
 }

@@ -47,6 +47,7 @@ public class SwaggerConfig {
         return GroupedOpenApi.builder()
                 .group("jwt-api")
                 .pathsToMatch("/**")
+                .addOperationCustomizer(customize())
                 .build();
     }
 
@@ -135,18 +136,16 @@ public class SwaggerConfig {
                                     try {
                                         ErrorReason errorReason = baseErrorCode.getErrorReason();
                                         return ExampleHolder.builder()
-                                                .holder(
-                                                        getSwaggerExample(
-                                                                baseErrorCode.getExplainError(),
-                                                                errorReason))
-                                                .code(errorReason.getStatus())
+                                                .holder(getSwaggerExample(baseErrorCode.getExplainError(), errorReason))
+                                                .httpStatus(errorReason.getStatus())
                                                 .name(errorReason.getCode())
                                                 .build();
+
                                     } catch (NoSuchFieldException e) {
                                         throw new RuntimeException(e);
                                     }
                                 })
-                        .collect(groupingBy(ExampleHolder::getCode));
+                        .collect(groupingBy(ExampleHolder::getHttpStatus));
 
         addExamplesToResponses(responses, statusWithExampleHolders);
     }
@@ -172,14 +171,14 @@ public class SwaggerConfig {
                                         ErrorReason errorReason = exception.getErrorReason();
                                         return ExampleHolder.builder()
                                                 .holder(getSwaggerExample(value, errorReason))
-                                                .code(errorReason.getStatus())
+                                                .httpStatus(errorReason.getStatus())
                                                 .name(field.getName())
                                                 .build();
                                     } catch (IllegalAccessException e) {
                                         throw new RuntimeException(e);
                                     }
                                 })
-                        .collect(groupingBy(ExampleHolder::getCode));
+                        .collect(groupingBy(ExampleHolder::getHttpStatus));
 
         // -------------------------- 콘텐츠 세팅 코드별로 진행
         addExamplesToResponses(responses, statusWithExampleHolders);
@@ -207,7 +206,8 @@ public class SwaggerConfig {
                             });
                     content.addMediaType("application/json", mediaType);
                     apiResponse.setContent(content);
-                    responses.addApiResponse(status.toString(), apiResponse);
+                    apiResponse.setDescription(v.get(0).getHolder().getDescription());
+                    responses.addApiResponse(String.valueOf(status), apiResponse);
                 });
     }
 

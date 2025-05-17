@@ -72,7 +72,7 @@ public enum ErrorStatus implements BaseErrorCode {
 
     @Override
     public ErrorReason getErrorReason() {
-        return new ErrorReason(httpStatus.value(), code, message, null);
+        return new ErrorReason(httpStatus.value(), code, message);
     }
 
     @Override
