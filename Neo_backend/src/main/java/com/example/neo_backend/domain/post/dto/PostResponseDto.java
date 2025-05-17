@@ -20,4 +20,17 @@ public class PostResponseDto {
     private String category;
     private Long likeCount;
     private List<String> imageUrls;
+
+    public static PostResponseDto from(Post post) {
+        return PostResponseDto.builder()
+                .postId(post.getPostId())
+                .title(post.getTitle())
+                .content(post.getContent())
+                .place(post.getPlace())
+                .status(post.getStatus())
+                .category(post.getCategory().name())
+                .likeCount((long) post.getLikeList().size())
+                .build();
+    }
+
 }
