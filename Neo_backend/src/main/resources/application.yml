@@ -10,7 +10,7 @@ spring:
 
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/teamE_backend?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mysql://teame-db.c5msg0qqmmcw.ap-northeast-2.rds.amazonaws.com:3306/teamE
     username: ${SPRING_DATASOURCE_USERNAME}
     password: ${SPRING_DATASOURCE_PASSWORD}
 
