@@ -1,5 +1,6 @@
 package com.example.neo_backend.global.common.exception;
 
+import com.example.neo_backend.domain.user.controller.AuthApiController;
 import com.example.neo_backend.global.common.response.ApiResponse;
 import com.example.neo_backend.global.common.status.ErrorStatus;
 
@@ -17,13 +18,7 @@ import org.springframework.web.servlet.resource.NoResourceFoundException;
 @Slf4j
 @RestControllerAdvice(
         annotations = {RestController.class},
-        basePackages = {
-                "com.example.neo_backend.domain.user.controller",
-                "com.example.neo_backend.domain.post.controller",
-                "com.example.neo_backend.domain.pin.controller",
-                "com.example.neo_backend.domain.like.controller",
-                "com.example.neo_backend.domain.image.controller"
-        }
+        basePackageClasses = {AuthApiController.class}
 )
 public class ExceptionAdvice {
     @ExceptionHandler

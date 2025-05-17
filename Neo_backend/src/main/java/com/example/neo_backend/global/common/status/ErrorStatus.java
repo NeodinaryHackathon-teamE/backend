@@ -16,6 +16,9 @@ public enum ErrorStatus {
     _FORBIDDEN(HttpStatus.FORBIDDEN, "COMMON4003", "금지된 요청입니다."),
     _NOT_FOUND(HttpStatus.NOT_FOUND, "COMMON4004", "페이지를 찾을 수 없습니다."),
 
+    // 인증 관련 에러
+    DUPLICATED_EMAIL(HttpStatus.BAD_REQUEST, "AUTH4001", "중복된 이메일입니다."),
+
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "VALID4001", "입력값이 올바르지 않습니다."),
     INVALID_KEYWORD(HttpStatus.BAD_REQUEST, "SEARCH4001", "검색어는 공백일 수 없습니다."),
     INVALID_PAGE_REQUEST(HttpStatus.BAD_REQUEST, "PAGENATION4001", "page는 음수일 수 없고, size는 100 이하의 양수여야 합니다.");

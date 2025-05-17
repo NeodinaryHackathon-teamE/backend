@@ -17,17 +17,7 @@ public class CustomUserDetails implements UserDetails {
     // 사용자의 특정한 권한 반환
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-
-        Collection<GrantedAuthority> collection = new ArrayList<>();
-
-        collection.add(new GrantedAuthority() {
-            @Override
-            public String getAuthority() {
-                return userEntity.getRole();
-            }
-        });
-
-        return collection;
+        return new ArrayList<>();
     }
 
     @Override
