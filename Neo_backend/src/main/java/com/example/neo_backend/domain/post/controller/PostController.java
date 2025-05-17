@@ -1,5 +1,6 @@
 package com.example.neo_backend.domain.post.controller;
 
+import com.example.neo_backend.global.common.annotation.ApiErrorCodeExample;
 import com.example.neo_backend.global.common.enums.Category;
 import com.example.neo_backend.global.common.exception.GeneralException;
 import com.example.neo_backend.global.common.response.ApiResponse;
@@ -35,6 +36,7 @@ public class PostController {
 
     @PostMapping
     @Operation(summary = "제보글 작성", description = "제보글 작성 API")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<PostResponseDto> createPost(
             @RequestPart("dto") String dtoJson,
             @RequestPart("images") List<MultipartFile> images) {
@@ -58,9 +60,9 @@ public class PostController {
         return ResponseEntity.ok(response);
     }
 
-
     @GetMapping("/{postId}")
     @Operation(summary = "제보글 상세 조회", description = "게시글 상세 정보 및 좋아요 수 조회")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<PostResponseDto> getPostDetail(@PathVariable("postId") Long postId) {
         PostResponseDto response = postService.getPostDetail(postId);
         return ResponseEntity.ok(response);
@@ -68,6 +70,7 @@ public class PostController {
 
     @PutMapping("/{postId}/complete")
     @Operation(summary = "제보글 완료 처리", description = "게시글의 status를 완료로 변경")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<PostResponseDto> completePost(@PathVariable("postId") Long postId,
                                                         HttpSession session) {
         String email = null;
@@ -95,6 +98,7 @@ public class PostController {
 
     @GetMapping("/category")
     @Operation(summary = "카테고리별 제보글 조회", description = "카테고리에 따른 제보글 목록을 반환")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<ApiResponse> getPostsByCategory(@RequestParam String category) {
         try {
             Category enumCategory = Category.valueOf(category);
@@ -106,6 +110,7 @@ public class PostController {
 
     @GetMapping("/status")
     @Operation(summary = "상태별 제보글 조회", description = "status가 true/false인 제보글 목록 조회")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<ApiResponse> getPostsByStatus(@RequestParam boolean status) {
         return postService.getPostsByStatus(status);
     }
