@@ -20,3 +20,16 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQLDialect
+
+cloud:
+  aws:
+    s3:
+      bucket: neoteame-bucket
+    credentials:
+      access-key: ${S3ACCESSKEY}
+      secret-key: ${S3SECRETKEY}
+    region:
+      static: ap-northeast-2
+      auto: false
+    stack:
+      auto: false

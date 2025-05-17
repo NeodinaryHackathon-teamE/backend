@@ -40,9 +40,7 @@ public class SecurityConfig {
     private static final String[] URL_TO_PERMIT = {
             "/v3/api-docs/**",
             "/swagger-ui/**",
-            "/auth/**",
-            "/api/v1/**",
-            "/api/token/**"
+            "/api/v1/**"
     };
 
     @Bean
@@ -53,7 +51,7 @@ public class SecurityConfig {
         configuration.addExposedHeader("Authorization");
 
         configuration.addAllowedOrigin("http://localhost:3000");
-//        configuration.addAllowedOrigin("http://3.35.193.132:3000");
+        configuration.addAllowedOrigin("http://3.37.144.218:3000");
         configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용 (GET, POST, etc.)
         configuration.addAllowedHeader("*"); // 모든 헤더 허용
         configuration.setAllowCredentials(true); // 인증 정보 허용 (쿠키 등)
