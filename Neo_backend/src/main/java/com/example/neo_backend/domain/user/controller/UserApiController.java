@@ -26,4 +26,11 @@ public class UserApiController {
         return ResponseEntity.ok(likedPost);
     }
 
+    @GetMapping("/posts")
+    @Operation(summary = "내가 작성한 제보글 조회", description = "내가 작성한 제보글 목록을 조회합니다.")
+    public ResponseEntity<List<PostResponseDto>> getMyPosts(HttpServletRequest request) {
+        List<PostResponseDto> myPosts = userService.getMyPosts(request);
+        return ResponseEntity.ok(myPosts);
+    }
+
 }
