@@ -11,6 +11,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    defaults:
+      run:
+        working-directory: ./Neo_backend
     steps:
       # 현재 레포지토리 가져오기
       - name: Checkout repository
