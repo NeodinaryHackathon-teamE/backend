@@ -66,5 +66,4 @@ public class Post extends BaseEntity {
                 .map(Image::getImageURL)
                 .collect(Collectors.toList());
     }
-
 }
