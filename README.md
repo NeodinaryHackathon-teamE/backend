@@ -27,7 +27,9 @@
         <img src="https://img.shields.io/badge/SpringBoot-6DB33F?style=flat&logo=SpringBoot&logoColor=white">
         <img src="https://img.shields.io/badge/Ubuntu-E95420?style=flat&logo=Ubuntu&logoColor=white">
         <br/>
+        <img src="https://img.shields.io/badge/Docker-2496ED?style=flat&logo=docker&logoColor=white">
         <img src="https://img.shields.io/badge/Docker Compose-2496ED?style=flat&logo=docker&logoColor=white">
+        <img src="https://img.shields.io/badge/GitHub Actions-2088FF?style=flat&logo=githubactions&logoColor=white">
         <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=flat&logo=amazon-ec2&logoColor=white">
         <img src="https://img.shields.io/badge/AWS S3-569A31?style=flat&logo=amazon-s3&logoColor=white">
         <img src="https://img.shields.io/badge/AWS RDS-527FFF?style=flat&logo=amazonrds&logoColor=white">
