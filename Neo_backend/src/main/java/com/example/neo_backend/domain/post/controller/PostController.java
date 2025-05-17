@@ -1,5 +1,6 @@
 package com.example.neo_backend.domain.post.controller;
 
+import com.example.neo_backend.domain.post.dto.PostSimpleResponseDto;
 import com.example.neo_backend.global.common.annotation.ApiErrorCodeExample;
 import com.example.neo_backend.global.common.enums.Category;
 import com.example.neo_backend.global.common.exception.GeneralException;
@@ -58,6 +59,13 @@ public class PostController {
 
         PostResponseDto response = postService.createPost(dto, images);
         return ResponseEntity.ok(response);
+    }
+
+    @GetMapping
+    @Operation(summary="제보글 전체 조회", description = "제보글 전체 조회 API")
+    @ApiErrorCodeExample(ErrorStatus.class)
+    public ResponseEntity<List<PostSimpleResponseDto>> getAllPosts() {
+        return postService.getAllPosts();
     }
 
     @GetMapping("/{postId}")
