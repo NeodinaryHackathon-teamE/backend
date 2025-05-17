@@ -42,7 +42,7 @@
 <div style="text-align: left;">
     <h2 style="border-bottom: 1px solid #d8dee4; color: #282d33;"> 🏗️ Infrastructure Architecture </h2>
     <div align="center"> 
-        <img src="https://i.imgur.com/XXDJKwd.png" alt="Infrastructure Architecture">
+        <img src="https://i.imgur.com/teUBIXe.png" alt="Infrastructure Architecture">
     </div>
 </div>
 
