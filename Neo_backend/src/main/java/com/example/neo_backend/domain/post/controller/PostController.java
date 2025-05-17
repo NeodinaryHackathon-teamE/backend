@@ -8,9 +8,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 @RequiredArgsConstructor
@@ -26,6 +24,22 @@ public class PostController {
         PostResponseDto response = postService.createPost(dto);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/{postId}")
+    @Operation(summary = "제보글 상세 조회", description = "게시글 상세 정보 및 좋아요 수 조회")
+    public ResponseEntity<PostResponseDto> getPostDetail(@PathVariable Long postId) {
+        PostResponseDto response = postService.getPostDetail(postId);
+        return ResponseEntity.ok(response);
+    }
+
+    @PutMapping("/{postId}/complete")
+    @Operation(summary = "제보글 완료 처리", description = "게시글의 status를 true(완료)로 변경")
+    public ResponseEntity<PostResponseDto> completePost(@PathVariable Long postId) {
+        PostResponseDto response = postService.completePost(postId);
+        return ResponseEntity.ok(response);
+    }
+
+
 
 
 }
