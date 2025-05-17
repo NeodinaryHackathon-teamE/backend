@@ -15,6 +15,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -40,13 +41,18 @@ public class PostController {
     @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<PostResponseDto> createPost(
             @RequestPart("dto") String dtoJson,
-            @RequestPart("images") List<MultipartFile> images) {
+            @RequestPart("images") List<MultipartFile> images,
+            HttpServletRequest request) {
 
         if (images == null || images.size() != 2) {
             throw new IllegalArgumentException("이미지는 반드시 2개 업로드해야 합니다.");
         }
 
-        System.out.println(images.size());
+        HttpSession session = request.getSession(false);
+        User user = (User) session.getAttribute("user");
+        if (user == null) {
+            throw new GeneralException(ErrorStatus._UNAUTHORIZED, "로그인한 유저가 없습니다.");
+        }
 
         PostRequestDto dto;
 
@@ -57,7 +63,7 @@ public class PostController {
             throw new RuntimeException("JSON 파싱 실패", e);
         }
 
-        PostResponseDto response = postService.createPost(dto, images);
+        PostResponseDto response = postService.createPost(dto, images, user);
         return ResponseEntity.ok(response);
     }
 

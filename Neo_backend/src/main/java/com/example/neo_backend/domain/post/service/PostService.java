@@ -46,10 +46,8 @@ public class PostService {
     private final PinRepository pinRepository;
 
     @Transactional
-    public PostResponseDto createPost(PostRequestDto dto,  List<MultipartFile> images) {
+    public PostResponseDto createPost(PostRequestDto dto,  List<MultipartFile> images, User user) {
         try {
-            User user = userRepository.findById(dto.getUserId())
-                    .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 유저를 찾을 수 없습니다."));
 
             Pin pin = Pin.builder()
                     .latitude(dto.getLatitude())
