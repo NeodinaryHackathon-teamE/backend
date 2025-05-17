@@ -55,12 +55,11 @@ public class AuthService {
 
         // 로그인 성공 - 세션에 사용자 정보 저장
         HttpSession session = request.getSession();
-        session.setAttribute(user.getEmail(), user);
+        session.setAttribute("user", user);
 
         // 필요한 경우 세션 타임아웃 설정
         session.setMaxInactiveInterval(3600); // 1시간
-        User user1 = (User)session.getAttribute(user.getEmail());
-        log.info("Session User: {}", user1.getEmail());
+
         return ApiResponse.onSuccess(SuccessStatus._OK);
     }
 }
