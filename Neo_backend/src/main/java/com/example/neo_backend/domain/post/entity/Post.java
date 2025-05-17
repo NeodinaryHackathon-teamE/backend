@@ -47,6 +47,7 @@ public class Post extends BaseEntity {
     @Column(nullable = false)
     private Category category;
 
+
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL, orphanRemoval = true)
     @Builder.Default
     private List<Image> imageList = new ArrayList<>();
