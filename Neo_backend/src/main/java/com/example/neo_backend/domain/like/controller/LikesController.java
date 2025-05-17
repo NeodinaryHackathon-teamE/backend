@@ -1,6 +1,8 @@
 package com.example.neo_backend.domain.like.controller;
 import com.example.neo_backend.domain.like.dto.LikeResponseDto;
 import com.example.neo_backend.domain.like.service.LikesService;
+import com.example.neo_backend.global.common.annotation.ApiErrorCodeExample;
+import com.example.neo_backend.global.common.status.ErrorStatus;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
@@ -21,6 +23,7 @@ public class LikesController {
 
     @PostMapping("")
     @Operation(summary = "좋아요 등록", description = "제보글에 좋아요를 등록합니다.")
+    @ApiErrorCodeExample(ErrorStatus.class)
     public ResponseEntity<Long> createLike(@RequestParam Long postId, HttpServletRequest request) {
         log.info("좋아요 등록 요청 postId: {}", postId);
         Long like = likesService.createLike(postId, request);
