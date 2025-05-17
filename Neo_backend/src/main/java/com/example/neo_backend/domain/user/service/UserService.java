@@ -51,4 +51,30 @@ public class UserService {
 
         return likedPosts;
     }
+
+    public List<PostResponseDto> getMyPosts(HttpServletRequest request) {
+        // 로그인한 유저 불러옴
+        HttpSession session= request.getSession(false);
+        User user = (User)session.getAttribute("user");
+        // 로그인한 유저가 없을 경우
+        if (user == null) {
+            throw new GeneralException(ErrorStatus._UNAUTHORIZED);
+        }
+        // 해당 유저가 작성한 제보글 목록 조회
+        List<PostResponseDto> myPosts = new ArrayList<>();
+        postRepository.findByUserUserId(user.getUserId()).forEach(post -> {
+            PostResponseDto postResponseDto = PostResponseDto.builder()
+                    .postId(post.getPostId())
+                    .title(post.getTitle())
+                    .content(post.getContent())
+                    .place(post.getPlace())
+                    .status(post.getStatus())
+                    .category(post.getCategory().toString())
+                    .likeCount(likesRepository.countByPostPostIdAndIsLikedTrue(post.getPostId()))
+                    .build();
+            myPosts.add(postResponseDto);
+        });
+
+        return myPosts;
+    }
 }
