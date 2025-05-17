@@ -54,7 +54,7 @@ public class SecurityConfig {
 
         configuration.addAllowedOrigin("http://localhost:5173");
         configuration.addAllowedOrigin("http://3.37.144.218:5173");
-        configuration.addAllowedOrigin("*");
+//        configuration.addAllowedOrigin("*");
         configuration.addAllowedMethod("*"); // 모든 HTTP 메서드 허용 (GET, POST, etc.)
         configuration.addAllowedHeader("*"); // 모든 헤더 허용
         configuration.setAllowCredentials(true); // 인증 정보 허용 (쿠키 등)
