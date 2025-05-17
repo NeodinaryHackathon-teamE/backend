@@ -1,5 +1,8 @@
 package com.example.neo_backend.domain.user.service;
 
+import com.example.neo_backend.domain.like.repository.LikesRepository;
+import com.example.neo_backend.domain.post.repository.PostRepository;
+import com.example.neo_backend.domain.user.dto.MyPageDto;
 import com.example.neo_backend.domain.user.dto.SigninDTO;
 import com.example.neo_backend.domain.user.dto.SignupDto;
 import com.example.neo_backend.domain.user.entity.User;
@@ -24,6 +27,8 @@ public class AuthService {
 
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final PostRepository postRepository;
+    private final LikesRepository likesRepository;
 
     public ResponseEntity<ApiResponse> signup(SignupDto signupDTO) {
         // 이메일 중복 확인
@@ -56,6 +61,8 @@ public class AuthService {
         // 로그인 성공 - 세션에 사용자 정보 저장
         HttpSession session = request.getSession();
         session.setAttribute(user.getEmail(), user);
+        session.setAttribute("user", user);
+
 
         // 필요한 경우 세션 타임아웃 설정
         session.setMaxInactiveInterval(3600); // 1시간
@@ -66,21 +73,16 @@ public class AuthService {
 
     public ResponseEntity<ApiResponse> getMyPage(HttpServletRequest request) {
         HttpSession session = request.getSession(false);
-        if (session == null) {
-            throw new GeneralException(ErrorStatus._UNAUTHORIZED);
-        }
+        if (session == null) throw new GeneralException(ErrorStatus._UNAUTHORIZED);
 
-        // 세션에서 저장한 사용자 정보 꺼내오기
         User user = (User) session.getAttribute("user");
-        if (user == null) {
-            throw new GeneralException(ErrorStatus._UNAUTHORIZED);
-        }
+        if (user == null) throw new GeneralException(ErrorStatus._UNAUTHORIZED);
 
         int myPosts = postRepository.countByUser(user);
-        int myLikes = likeRepository.countByUser(user);
+        int myLikes = likesRepository.countByUser(user);
 
-        MyPageResponse response = MyPageResponse.builder()
-                .nickname(user.getNickName())
+        MyPageDto response = MyPageDto.builder()
+                .nickName(user.getNickName())
                 .email(user.getEmail())
                 .postCount(myPosts)
                 .likeCount(myLikes)
