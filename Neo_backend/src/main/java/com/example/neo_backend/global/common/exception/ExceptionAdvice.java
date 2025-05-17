@@ -1,12 +1,12 @@
 package com.example.neo_backend.global.common.exception;
 
-import com.edison.project.common.response.ApiResponse;
-import com.edison.project.common.status.ErrorStatus;
+import com.example.neo_backend.global.common.response.ApiResponse;
+import com.example.neo_backend.global.common.status.ErrorStatus;
+
 import jakarta.validation.ConstraintViolationException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.convert.ConversionFailedException;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;

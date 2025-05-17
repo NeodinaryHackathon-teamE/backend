@@ -1,14 +1,13 @@
 package com.example.neo_backend.global.common.response;
 
-import com.edison.project.common.status.ErrorStatus;
-import com.edison.project.common.status.SuccessStatus;
+import com.example.neo_backend.global.common.status.SuccessStatus;
+import com.example.neo_backend.global.common.status.ErrorStatus;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Slice;
 
 
 @Getter
@@ -57,8 +56,8 @@ public class ApiResponse {
                 new ApiResponse(false, error.getCode(), error.getMessage(), null, null), error.getHttpStatus());
     }
 
-    public static ResponseEntity<ApiResponse> onFailure(ErrorStatus error, String message) {
-        return new ResponseEntity<>(new ApiResponse(false, error.getCode(), error.getMessage(message), null, null), error.getHttpStatus());
-    }
 
+    public static ResponseEntity<ApiResponse> onFailure(ErrorStatus error, String message) {
+        return new ResponseEntity<>(new ApiResponse(false, error.getCode(), error.getMessage(), null, null), error.getHttpStatus());
+    }
 }
