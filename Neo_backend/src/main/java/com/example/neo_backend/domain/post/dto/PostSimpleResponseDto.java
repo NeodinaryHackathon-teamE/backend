@@ -19,6 +19,8 @@ public class PostSimpleResponseDto {
     private Boolean status;
     private String category;
     private Long likeCount;
+    private Double latitude;
+    private Double longitude;
 
     public static PostSimpleResponseDto from(Post post) {
         return PostSimpleResponseDto.builder()
@@ -29,6 +31,8 @@ public class PostSimpleResponseDto {
                 .status(post.getStatus())
                 .category(post.getCategory().name())
                 .likeCount((long) post.getLikeList().size())
+                .latitude(post.getPin().getLatitude())
+                .longitude(post.getPin().getLongitude())
                 .build();
     }
 
