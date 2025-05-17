@@ -1,15 +1,21 @@
 package com.example.neo_backend.domain.pin.entity;
 
 import com.example.neo_backend.domain.image.entity.Image;
-import com.example.neo_backend.domain.like.entity.Like;
+import com.example.neo_backend.domain.like.entity.Likes;
 import com.example.neo_backend.domain.post.entity.Post;
+import com.example.neo_backend.global.common.entity.BaseEntity;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-public class Pin {
+@Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+public class Pin extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long pinId;
 
@@ -23,6 +29,6 @@ public class Pin {
     private List<Image> imageList = new ArrayList<>();
 
     @OneToMany(mappedBy = "pin")
-    private List<Like> likeList = new ArrayList<>();
+    private List<Likes> likeList = new ArrayList<>();
 
 }

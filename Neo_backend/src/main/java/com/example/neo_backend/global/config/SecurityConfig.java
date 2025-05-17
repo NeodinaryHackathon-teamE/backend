@@ -1,4 +1,4 @@
-package com.example.neo_backend.config;
+package com.example.neo_backend.global.config;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
