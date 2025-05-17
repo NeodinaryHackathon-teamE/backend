@@ -11,6 +11,7 @@ import lombok.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Entity
 @Getter
@@ -57,6 +58,12 @@ public class Post extends BaseEntity {
 
     public void complete() {
         this.status = true;
+    }
+
+    public List<String> getImageUrls() {
+        return imageList.stream()
+                .map(Image::getImageURL)
+                .collect(Collectors.toList());
     }
 
 }

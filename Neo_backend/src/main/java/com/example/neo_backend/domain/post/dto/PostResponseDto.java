@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -15,4 +17,5 @@ public class PostResponseDto {
     private Boolean status;
     private String category;
     private Long likeCount;
+    private List<String> imageUrls;
 }
