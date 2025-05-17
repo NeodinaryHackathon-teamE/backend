@@ -5,6 +5,8 @@ import com.example.neo_backend.domain.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
 
+import java.util.List;
+
 @Getter
 @AllArgsConstructor
 @Builder
@@ -17,6 +19,7 @@ public class PostResponseDto {
     private Boolean status;
     private String category;
     private Long likeCount;
+    private List<String> imageUrls;
 
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
@@ -29,4 +32,5 @@ public class PostResponseDto {
                 .likeCount((long) post.getLikeList().size())
                 .build();
     }
+
 }

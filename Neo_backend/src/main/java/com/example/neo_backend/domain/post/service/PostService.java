@@ -1,5 +1,9 @@
 package com.example.neo_backend.domain.post.service;
 
+import com.example.neo_backend.domain.image.entity.Image;
+import com.example.neo_backend.domain.image.repository.ImageRepository;
+import com.example.neo_backend.domain.image.service.ImageService;
+import com.example.neo_backend.domain.image.utils.S3Uploader;
 import com.example.neo_backend.domain.like.repository.LikesRepository;
 import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.pin.repository.PinRepository;
@@ -18,6 +22,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -28,11 +37,14 @@ public class PostService {
 
     private final PostRepository postRepository;
     private final UserRepository userRepository;
-    private final PinRepository pinRepository;
+    private final ImageRepository imageRepository;
     private final LikesRepository likesRepository;
+    private final S3Uploader s3Uploader;
+    private final ImageService imageService;
+    private final PinRepository pinRepository;
 
     @Transactional
-    public PostResponseDto createPost(PostRequestDto dto) {
+    public PostResponseDto createPost(PostRequestDto dto,  List<MultipartFile> images) {
         try {
             User user = userRepository.findById(dto.getUserId())
                     .orElseThrow(() -> new GeneralException(ErrorStatus._NOT_FOUND, "해당 유저를 찾을 수 없습니다."));
@@ -41,10 +53,11 @@ public class PostService {
                     .latitude(dto.getLatitude())
                     .longitude(dto.getLongitude())
                     .build();
+            Pin savedPin = pinRepository.save(pin);
 
             Post post = Post.builder()
                     .user(user)
-                    .pin(pin)
+                    .pin(savedPin)
                     .title(dto.getTitle())
                     .content(dto.getContent())
                     .place(dto.getPlace())
@@ -54,6 +67,15 @@ public class PostService {
 
             Post savedPost = postRepository.save(post);
 
+            List<Image> savedImages = new ArrayList<>();
+            if(images != null && !images.isEmpty()) {
+                savedImages = imageService.uploadImages(post.getPostId(), images, user, savedPin);
+            }
+
+            List<String> imageUrls = savedImages.stream()
+                    .map(Image::getImageURL)
+                    .collect(Collectors.toList());
+
             return PostResponseDto.builder()
                     .postId(savedPost.getPostId())
                     .title(savedPost.getTitle())
@@ -61,7 +83,8 @@ public class PostService {
                     .place(savedPost.getPlace())
                     .status(savedPost.getStatus())
                     .category(savedPost.getCategory().toString())
-                    .likeCount(0L)
+                    .likeCount(0L) //처음엔 좋아요 0개
+                    .imageUrls(imageUrls)
                     .build();
 
         } catch (GeneralException e) {
@@ -99,6 +122,11 @@ public class PostService {
 
         Long likeCount = likesRepository.countByPostPostIdAndIsLikedTrue(postId);
 
+        List<String> imageUrls = post.getImageList().stream()
+                .map(Image::getImageURL)
+                .collect(Collectors.toList());
+
+
         return PostResponseDto.builder()
                 .postId(post.getPostId())
                 .title(post.getTitle())
@@ -107,6 +135,7 @@ public class PostService {
                 .status(post.getStatus())
                 .category(post.getCategory().toString())
                 .likeCount(likeCount)
+                .imageUrls(imageUrls)
                 .build();
     }
 
@@ -136,6 +165,7 @@ public class PostService {
 
         Long likeCount = likesRepository.countByPostPostIdAndIsLikedTrue(postId);
 
+
         return new PostResponseDto(
                 post.getPostId(),
                 post.getTitle(),
@@ -143,7 +173,8 @@ public class PostService {
                 post.getPlace(),
                 post.getStatus(),
                 post.getCategory().name(),
-                likeCount
+                likeCount,
+                post.getImageUrls()
         );
     }
 }
