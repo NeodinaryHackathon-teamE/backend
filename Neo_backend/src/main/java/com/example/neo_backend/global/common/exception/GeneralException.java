@@ -1,6 +1,7 @@
 package com.example.neo_backend.global.common.exception;
 
-import com.edison.project.common.status.ErrorStatus;
+
+import com.example.neo_backend.global.common.status.ErrorStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -31,9 +32,9 @@ public class GeneralException extends RuntimeException {
         this.errorStatus = errorStatus;
     }
 
-    // 로그인 필요 예외 생성
-    public static GeneralException loginRequired() {
-        return new GeneralException(ErrorStatus.LOGIN_REQUIRED, ErrorStatus.LOGIN_REQUIRED.getMessage());
-    }
+//    // 로그인 필요 예외 생성
+//    public static GeneralException loginRequired() {
+//        return new GeneralException(ErrorStatus.LOGIN_REQUIRED, ErrorStatus.LOGIN_REQUIRED.getMessage());
+//    }
 
 }
