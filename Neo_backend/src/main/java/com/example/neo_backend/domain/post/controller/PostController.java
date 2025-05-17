@@ -19,8 +19,12 @@ public class PostController {
 
     @GetMapping("/category")
     public ResponseEntity<ApiResponse> getPostsByCategory(@RequestParam String category) {
-        Category enumCategory = Category.fromKorean(category);
-        return postService.getPostsByCategory(enumCategory);
+        try {
+            Category enumCategory = Category.valueOf(category);
+            return postService.getPostsByCategory(enumCategory);
+        } catch (IllegalArgumentException e) {
+            throw new GeneralException(ErrorStatus.INVALID_CATEGORY);
+        }
     }
 
 }

@@ -1,5 +1,6 @@
 package com.example.neo_backend.domain.post.service;
 
+import com.example.neo_backend.domain.post.dto.PostResponseDto;
 import com.example.neo_backend.domain.post.repository.PostRepository;
 import com.example.neo_backend.global.common.enums.Category;
 import com.example.neo_backend.global.common.exception.GeneralException;
@@ -10,6 +11,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 public class PostService {
@@ -19,8 +23,13 @@ public class PostService {
     public ResponseEntity<ApiResponse> getPostsByCategory(Category category) {
         var postList = postRepository.findByCategory(category);
         if (postList.isEmpty()) {
-            return ApiResponse.onFailure(ErrorStatus.POST_NOT_FOUND);
+            return ApiResponse.onFailure(ErrorStatus._NOT_FOUND);
         }
-        return ApiResponse.onSuccess(SuccessStatus._OK, postList);
+
+        List<PostResponseDto> responseList = postList.stream()
+                .map(PostResponseDto::from)
+                .collect(Collectors.toList());
+
+        return ApiResponse.onSuccess(SuccessStatus._OK, responseList);
     }
 }
