@@ -16,6 +16,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Optional;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
@@ -46,11 +48,11 @@ public class LikesService {
         if (likeRecord == null) {
             log.info("좋아요 레코드가 존재하지 않음, 새로 생성합니다.");
             // 좋아요 레코드 생성
-            Post post = postRepository.findByPostId(postId);
+            Optional<Post> post = postRepository.findByPostId(postId);
             Likes newLike = Likes.builder()
-                    .post(post)
+                    .post(post.get())
                     .user(user)
-                    .pin(post.getPin())
+                    .pin(post.get().getPin())
                     .isLiked(true)
                     .build();
             likesRepository.save(newLike);
