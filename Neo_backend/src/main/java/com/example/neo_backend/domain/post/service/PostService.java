@@ -9,6 +9,7 @@ import com.example.neo_backend.domain.pin.entity.Pin;
 import com.example.neo_backend.domain.pin.repository.PinRepository;
 import com.example.neo_backend.domain.post.dto.PostRequestDto;
 import com.example.neo_backend.domain.post.dto.PostResponseDto;
+import com.example.neo_backend.domain.post.dto.PostSimpleResponseDto;
 import com.example.neo_backend.domain.post.entity.Post;
 import com.example.neo_backend.domain.post.repository.PostRepository;
 import com.example.neo_backend.global.common.enums.Category;
@@ -19,6 +20,7 @@ import com.example.neo_backend.domain.user.repository.UserRepository;
 import com.example.neo_backend.global.common.exception.GeneralException;
 import com.example.neo_backend.global.common.status.ErrorStatus;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -177,4 +179,20 @@ public class PostService {
                 post.getImageUrls()
         );
     }
+
+
+    public ResponseEntity<List<PostSimpleResponseDto>> getAllPosts() {
+        List<Post> postList = postRepository.findAll();
+
+        if (postList.isEmpty()) {
+            throw new GeneralException(ErrorStatus._NOT_FOUND);
+        }
+
+        List<PostSimpleResponseDto> responseList = postList.stream()
+                .map(PostSimpleResponseDto::from)
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(responseList);
+    }
+
 }
