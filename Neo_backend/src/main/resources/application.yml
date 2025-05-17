@@ -1,0 +1,11 @@
+server:
+  port : 8080
+
+spring:
+  application:
+    name: Neo_backend
+
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration
+      - org.springframework.boot.autoconfigure.orm.jpa.HibernateJpaAutoConfiguration
