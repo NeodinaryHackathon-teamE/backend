@@ -1,10 +1,12 @@
 package com.example.neo_backend.domain.post.dto;
 
+import lombok.AllArgsConstructor;
 import com.example.neo_backend.domain.post.entity.Post;
 import lombok.Builder;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 @Builder
 public class PostResponseDto {
 
@@ -12,9 +14,9 @@ public class PostResponseDto {
     private String title;
     private String content;
     private String place;
-    private String status;
+    private Boolean status;
     private String category;
-    private int likeCount;
+    private Long likeCount;
 
     public static PostResponseDto from(Post post) {
         return PostResponseDto.builder()
@@ -22,9 +24,9 @@ public class PostResponseDto {
                 .title(post.getTitle())
                 .content(post.getContent())
                 .place(post.getPlace())
-                .status(post.getStatus() ? "완료" : "대기")
+                .status(post.getStatus())
                 .category(post.getCategory().name())
-                .likeCount(post.getLikeList().size())
+                .likeCount((long) post.getLikeList().size())
                 .build();
     }
 }

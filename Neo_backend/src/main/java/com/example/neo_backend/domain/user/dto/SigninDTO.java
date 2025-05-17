@@ -1,10 +1,10 @@
 package com.example.neo_backend.domain.user.dto;
 
-import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
-@Builder
+@NoArgsConstructor
 public class SigninDTO {
     private String email;
     private String password;

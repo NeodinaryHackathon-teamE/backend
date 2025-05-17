@@ -28,7 +28,12 @@ public enum ErrorStatus {
 
     VALIDATION_ERROR(HttpStatus.BAD_REQUEST, "VALID4001", "입력값이 올바르지 않습니다."),
     INVALID_KEYWORD(HttpStatus.BAD_REQUEST, "SEARCH4001", "검색어는 공백일 수 없습니다."),
-    INVALID_PAGE_REQUEST(HttpStatus.BAD_REQUEST, "PAGENATION4001", "page는 음수일 수 없고, size는 100 이하의 양수여야 합니다.");
+    INVALID_PAGE_REQUEST(HttpStatus.BAD_REQUEST, "PAGENATION4001", "page는 음수일 수 없고, size는 100 이하의 양수여야 합니다."),
+
+    _PIN_NOT_FOUND(HttpStatus.NOT_FOUND, "POST4042", "해당 핀을 찾을 수 없습니다."),
+    NOT_AUTHOR_OF_POST(HttpStatus.FORBIDDEN, "POST4005", "해당 게시글을 작성한 유저가 아닙니다."),
+    _POST_INTERNAL_SERVER_ERROR(HttpStatus.INTERNAL_SERVER_ERROR, "POST5000", "게시글 처리 중 서버 내부 오류입니다.");
+
 
     private final HttpStatus httpStatus;
     private final String code;
